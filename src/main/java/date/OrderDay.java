@@ -9,9 +9,6 @@ public class OrderDay {
     private static final int END_DAY = 31;
     private static final int THIS_YEAR = 2023;
     private static final int D_DAY_EVENT_END_DAY = 25;
-    private static final int D_DAY_DISCOUNT_START_PRICE = 1000;
-    private static final int D_DAY_DISCOUNT_AMOUNT_PER_DAY = 100;
-    private static final int NOT_APPLICABLE = 0;
     private final Integer day;
     public OrderDay(int day) {
         validateDay(day);
@@ -42,11 +39,10 @@ public class OrderDay {
         return dayOfWeek == START_DAY || this.day == D_DAY_EVENT_END_DAY;
     }
 
-    public int getDiscountAmount() {
-        int increasingDiscountAmount = (this.day - START_DAY) * D_DAY_DISCOUNT_AMOUNT_PER_DAY;
-        if (this.day > D_DAY_EVENT_END_DAY){
-            return NOT_APPLICABLE;
-        }
-        return D_DAY_DISCOUNT_START_PRICE + increasingDiscountAmount;
+    public boolean isDDayApplicable() {
+        return this.day <= D_DAY_EVENT_END_DAY;
+    }
+    public int getDDayApplicableDays() {
+        return this.day - START_DAY;
     }
 }

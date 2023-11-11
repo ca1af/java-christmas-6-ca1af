@@ -73,15 +73,23 @@ class OrderDayTest {
 
     @ParameterizedTest
     @ValueSource(ints = {8, 9, 15, 16, 22, 23, 29, 30})
-    @DisplayName("D-DAY 할인량을 테스트")
-    void discountAmountOfDDay(int day){
+    @DisplayName("D-DAY 할인 가능 여부 테스트")
+    void isDDayApplicable(int day){
         OrderDay orderDay = new OrderDay(day);
-        int discountAmount = orderDay.getDiscountAmount();
+        boolean dDayApplicable = orderDay.isDDayApplicable();
         if (day > 25){
-            assertThat(discountAmount).isZero();
+            assertThat(dDayApplicable).isFalse();
             return;
         }
-        int discountAmountOfDDay = 1000 + (day - 1) * 100; //D-DAY 할인정책에 따른 할인 총량
-        assertThat(discountAmount).isEqualTo(discountAmountOfDDay);
+        assertThat(dDayApplicable).isTrue();
+    }
+
+    @Test
+    @DisplayName("추가 할인량은 오늘날짜 - 1이다. ex : 25일 == 24 * 100원 추가")
+    void getDDayApplicableDays() {
+        int day = 21;
+        OrderDay orderDay = new OrderDay(day);
+        int dDayApplicableDays = orderDay.getDDayApplicableDays();
+        assertThat(dDayApplicableDays).isEqualTo(day - 1);
     }
 }
