@@ -2,7 +2,7 @@ package menu;
 
 import date.OrderDay;
 
-public enum Appetizer implements DateDiscountPolicy {
+public enum Appetizer implements Menu {
     MUSHROOM_SOUP("양송이수프", 6_000),
     TAPAS("타파스", 5_500),
     CAESAR_SALAD("시저샐러드", 8_000);
@@ -14,12 +14,19 @@ public enum Appetizer implements DateDiscountPolicy {
         this.name = name;
         this.price = price;
     }
-    public String getName() {
-        return name;
-    }
-
     @Override
     public boolean isDayOfWeekApplicable(OrderDay orderDay) {
         return false;
     }
+
+    @Override
+    public int getPrice() {
+        return this.price;
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
 }
