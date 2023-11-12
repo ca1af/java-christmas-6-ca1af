@@ -1,5 +1,6 @@
 package menu;
 
+import exeptions.ExceptionMessage;
 import menu.category.Appetizer;
 import menu.category.Beverage;
 import menu.category.Dessert;
@@ -37,7 +38,7 @@ public class MenuFactory {
 
     private static void validateName(String menuName) {
         if (!menuNameMap.containsKey(menuName)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ExceptionMessage.INVALID_ORDER.getMessage());
         }
     }
 }
