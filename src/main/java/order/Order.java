@@ -17,7 +17,11 @@ public class Order {
         this.menuQuantity = menuQuantity;
     }
 
-    public int getTotalMoneyAmount(){
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public int getOrderAmount(){
         return this.menu.getPrice() * menuQuantity;
     }
 

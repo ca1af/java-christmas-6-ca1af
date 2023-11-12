@@ -2,10 +2,11 @@ package order;
 
 import date.OrderDay;
 import menu.Menu;
+import menu.category.Beverage;
 import menu.category.Main;
-import order.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -37,6 +38,12 @@ class OrderTest {
         order = new Order(menu, MENU_QUANTITY);
     }
 
+    @Test
+    void getMenuTest() {
+        order = new Order(Beverage.CHAMPAGNE, 1);
+        assertThat(order.getMenu()).isEqualTo(Beverage.CHAMPAGNE);
+    }
+
     @ParameterizedTest
     @ValueSource(ints = {1000, 2000, 3000, 4000, 5000, 6000})
     @DisplayName("메뉴의 원래 총 가격을 계산한다.")
@@ -58,7 +65,7 @@ class OrderTest {
             }
         };
         order = new Order(menu, MENU_QUANTITY);
-        assertThat(order.getTotalMoneyAmount()).isEqualTo(price * MENU_QUANTITY);
+        assertThat(order.getOrderAmount()).isEqualTo(price * MENU_QUANTITY);
     }
 
     @ParameterizedTest
