@@ -1,24 +1,25 @@
-package menu;
+package menu.category;
 
 import date.OrderDay;
+import menu.Menu;
 
-public enum Main implements Menu {
-    T_BONE_STEAK("티본스테이크", 55_000),
-    BARBEQUE_RIB("바비큐립", 54_000),
-    SEAFOOD_PASTA("해산물파스타", 35_000),
-    CHRISTMAS_PASTA("크리스마스파스타",25_000)
+public enum Beverage implements Menu {
+    ZERO_COLA("제로콜라", 3_000),
+    RED_WINE("레드와인",60_000),
+    CHAMPAGNE("샴페인",25_000)
     ;
+
     private final String name;
     private final int price;
 
-    Main(String name, int price) {
+    Beverage(String name, int price) {
         this.name = name;
         this.price = price;
     }
 
     @Override
     public boolean isDayOfWeekApplicable(OrderDay orderDay) {
-        return orderDay.isWeekend();
+        return false;
     }
     @Override
     public String getName() {
@@ -28,4 +29,5 @@ public enum Main implements Menu {
     public int getPrice() {
         return price;
     }
+
 }

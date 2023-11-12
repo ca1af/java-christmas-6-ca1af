@@ -1,5 +1,10 @@
 package menu;
 
+import menu.category.Appetizer;
+import menu.category.Beverage;
+import menu.category.Dessert;
+import menu.category.Main;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 

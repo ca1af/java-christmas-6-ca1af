@@ -1,6 +1,10 @@
 package menu;
 
 import date.OrderDay;
+import menu.category.Appetizer;
+import menu.category.Beverage;
+import menu.category.Dessert;
+import menu.category.Main;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

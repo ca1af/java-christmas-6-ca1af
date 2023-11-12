@@ -1,24 +1,22 @@
-package menu;
+package menu.category;
 
 import date.OrderDay;
+import menu.Menu;
 
-public enum Beverage implements Menu {
-    ZERO_COLA("제로콜라", 3_000),
-    RED_WINE("레드와인",60_000),
-    CHAMPAGNE("샴페인",25_000)
-    ;
-
+public enum Dessert implements Menu {
+    CHOCOLATE_CAKE("초코케이크", 15_000),
+    ICE_CREAM("아이스크림", 5_000);
     private final String name;
     private final int price;
 
-    Beverage(String name, int price) {
+    Dessert(String name, int price) {
         this.name = name;
         this.price = price;
     }
 
     @Override
     public boolean isDayOfWeekApplicable(OrderDay orderDay) {
-        return false;
+        return !orderDay.isWeekend();
     }
     @Override
     public String getName() {
@@ -28,5 +26,4 @@ public enum Beverage implements Menu {
     public int getPrice() {
         return price;
     }
-
 }

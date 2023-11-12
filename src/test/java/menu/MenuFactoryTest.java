@@ -1,8 +1,13 @@
 package menu;
 
+import menu.category.Appetizer;
+import menu.category.Beverage;
+import menu.category.Dessert;
+import menu.category.Main;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 class MenuFactoryTest {
     @Test

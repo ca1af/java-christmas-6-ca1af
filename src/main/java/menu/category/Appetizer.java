@@ -1,6 +1,7 @@
-package menu;
+package menu.category;
 
 import date.OrderDay;
+import menu.Menu;
 
 public enum Appetizer implements Menu {
     MUSHROOM_SOUP("양송이수프", 6_000),
