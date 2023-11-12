@@ -26,14 +26,19 @@ public class Order {
     }
 
     public int getTotalDiscount(OrderDay orderDay){
+        int dayOfWeekDiscount = getDayOfWeekDiscount(orderDay);
+        int discountForDDay = discountByDDay(orderDay);
+        int discountForStarDay = discountByStarDay(orderDay);
+        int menuDiscount = discountForStarDay + discountForDDay + dayOfWeekDiscount;
+        return menuDiscount * menuQuantity;
+    }
+
+    private int getDayOfWeekDiscount(OrderDay orderDay) {
         int dayOfWeekDiscount = NOT_APPLICABLE;
         if (menu.isDayOfWeekApplicable(orderDay)) {
             dayOfWeekDiscount = DAY_OF_WEEK_DISCOUNT;
         }
-        int discountForDDay = discountByDDay(orderDay);
-        int discountForStarDay = discountByStarDay(orderDay);
-        int totalPrice = discountForStarDay + discountForDDay + dayOfWeekDiscount;
-        return totalPrice * menuQuantity;
+        return dayOfWeekDiscount;
     }
 
     public int discountByStarDay(OrderDay orderDay){
