@@ -1,6 +1,7 @@
 package order;
 
 import date.OrderDay;
+import gift.Badge;
 import gift.FreeGift;
 import menu.category.Appetizer;
 import menu.category.Beverage;
@@ -182,5 +183,14 @@ class OrdersTest {
         int totalDiscount = orders.getTotalDiscount(orderDay);
         int freeGiftPrice = FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
         assertThat(totalBenefit).isEqualTo(totalDiscount + freeGiftPrice);
+    }
+
+    @Test
+    @DisplayName("총 혜택금액에 따른 뱃지 부여를 테스트한다.")
+    void getBadge() {
+        OrderDay orderDay = new OrderDay(25);
+        int totalBenefit = orders.getTotalBenefit(orderDay);
+        Badge badgeByPrice = Badge.getBadgeByPrice(totalBenefit);
+        assertThat(badgeByPrice).isEqualTo(Badge.SANTA);
     }
 }

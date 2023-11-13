@@ -1,6 +1,7 @@
 package order;
 
 import date.OrderDay;
+import gift.Badge;
 import gift.FreeGift;
 import menu.category.Beverage;
 
@@ -72,6 +73,15 @@ public class Orders {
         return !this.containsOnlyBeverages() && this.getOrderAmount() >= FREE_GIFT_STANDARD;
     }
 
+    public int getFinalPrice(OrderDay orderDay) {
+        return this.getOrderAmount() - this.getTotalDiscount(orderDay);
+    }
+
+    public Badge getBadge(OrderDay orderDay){
+        int totalBenefit = this.getTotalBenefit(orderDay);
+        return Badge.getBadgeByPrice(totalBenefit);
+    }
+
     private boolean isOrderBelowMinimumOrderAmountOfDiscount() {
         return this.orders.stream()
                 .mapToInt(Order::getOrderAmount)
@@ -82,9 +92,5 @@ public class Orders {
         return orders.stream()
                 .filter(order -> order.getMenu() instanceof Beverage)
                 .count() == orders.size();
-    }
-
-    public int getFinalPrice(OrderDay orderDay) {
-        return this.getOrderAmount() - this.getTotalDiscount(orderDay);
     }
 }
