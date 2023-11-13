@@ -5,9 +5,7 @@ import menu.Menu;
 
 public class Order {
     private static final int DAY_OF_WEEK_DISCOUNT = 2_023;
-    private static final int D_DAY_DISCOUNT_START_PRICE = 1000;
-    private static final int D_DAY_DISCOUNT_AMOUNT_PER_DAY = 100;
-    private static final int NOT_APPLICABLE = 0;
+    private static final int NO_DISCOUNT = 0;
     private final Menu menu;
     private final int menuQuantity;
 
@@ -34,23 +32,14 @@ public class Order {
 
     public int getTotalDiscount(OrderDay orderDay){
         int dayOfWeekDiscount = getDayOfWeekDiscount(orderDay);
-        int discountForDDay = discountByDDay(orderDay);
-        int menuDiscount = discountForDDay + dayOfWeekDiscount;
-        return menuDiscount * menuQuantity;
+        return dayOfWeekDiscount * menuQuantity;
     }
 
     private int getDayOfWeekDiscount(OrderDay orderDay) {
-        int dayOfWeekDiscount = NOT_APPLICABLE;
+        int dayOfWeekDiscount = NO_DISCOUNT;
         if (menu.isDayOfWeekApplicable(orderDay)) {
             dayOfWeekDiscount = DAY_OF_WEEK_DISCOUNT;
         }
         return dayOfWeekDiscount;
-    }
-
-    public int discountByDDay(OrderDay orderDay){
-        if (orderDay.isDDayApplicable()){
-            return orderDay.getDDayApplicableDays() * D_DAY_DISCOUNT_AMOUNT_PER_DAY + D_DAY_DISCOUNT_START_PRICE;
-        }
-        return NOT_APPLICABLE;
     }
 }

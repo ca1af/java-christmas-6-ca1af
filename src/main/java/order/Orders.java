@@ -1,6 +1,7 @@
 package order;
 
 import date.OrderDay;
+import gift.FreeGift;
 import menu.category.Beverage;
 
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ public class Orders {
     private static final int MINIMUM_ORDER_AMOUNT_FOR_DISCOUNT = 10000;
     private static final int STAR_DAY_DISCOUNT = 1_000;
     private static final int FREE_GIFT_STANDARD = 120_000;
+    private static final int D_DAY_DISCOUNT_START_PRICE = 1000;
+    private static final int D_DAY_DISCOUNT_AMOUNT_PER_DAY = 100;
     private final List<Order> orders;
     public Orders(List<Order> orders) {
         this.orders = orders;
@@ -26,6 +29,13 @@ public class Orders {
                 .sum();
     }
 
+    public int getTotalBenefit(OrderDay orderDay){
+        if (this.isFreeGiftApplicable()){
+            return getTotalDiscount(orderDay) + FreeGift.FREE_GIFT.getPrice();
+        }
+        return getTotalDiscount(orderDay);
+    }
+
     public int getTotalDiscount(OrderDay orderDay) {
         if (containsOnlyBeverages()){
             return NO_DISCOUNT;
@@ -34,15 +44,26 @@ public class Orders {
             return NO_DISCOUNT;
         }
         int starDayDiscount = getStarDayDiscount(orderDay);
+        int dayOfWeekDiscount = getDayOfWeekDiscount(orderDay);
+        return starDayDiscount + dayOfWeekDiscount;
+    }
 
-        return starDayDiscount + orders.stream()
+    public int getDayOfWeekDiscount(OrderDay orderDay) {
+        return orders.stream()
                 .mapToInt(order -> order.getTotalDiscount(orderDay))
                 .sum();
     }
 
-    private int getStarDayDiscount(OrderDay orderDay){
+    public int getStarDayDiscount(OrderDay orderDay){
         if (orderDay.isStarDay()){
             return STAR_DAY_DISCOUNT;
+        }
+        return NO_DISCOUNT;
+    }
+
+    public int getDiscountByDDay(OrderDay orderDay){
+        if (orderDay.isDDayApplicable()){
+            return orderDay.getDDayApplicableDays() * D_DAY_DISCOUNT_AMOUNT_PER_DAY + D_DAY_DISCOUNT_START_PRICE;
         }
         return NO_DISCOUNT;
     }

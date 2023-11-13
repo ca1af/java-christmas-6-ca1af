@@ -3,6 +3,7 @@ package order;
 import date.OrderDay;
 import menu.Menu;
 import menu.category.Beverage;
+import menu.category.Dessert;
 import menu.category.Main;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -70,65 +71,35 @@ class OrderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 5, 10, 15, 20, 25})
-    @DisplayName("D-DAY 할인의 적용률 테스트")
-    void discountByDDay(int day) {
-        OrderDay orderDay = new OrderDay(day);
-        
-        int discountByDDay = order.discountByDDay(orderDay);
-        int estimatedDiscount = 1000 + (day - 1) * 100; // 할인 계산식
-        assertThat(discountByDDay).isEqualTo(estimatedDiscount);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {26, 27, 28, 29, 30, 31})
-    @DisplayName("25일 이후 날짜는 D-DAY 할인의 적용을 받지 않음을 확인")
-    void discountByDDay_NONE(int day) {
-        OrderDay orderDay = new OrderDay(day);
-        
-        int discountByDDay = order.discountByDDay(orderDay);
-        assertThat(discountByDDay).isZero();
-    }
-    @ParameterizedTest
-    @ValueSource(ints = {1, 5, 10, 15, 20, 25, 30})
-    @DisplayName("요일 할인이 적용되지 않았을 경우의 총 할인액")
-    void totalDiscount_NO_DAY_OF_WEEKEND_DISCOUNT(int day) {
-        OrderDay orderDay = new OrderDay(day);
-        
-        int discountByDDay = order.discountByDDay(orderDay);
-        int totalDiscount = order.getTotalDiscount(orderDay);
-
-        assertThat(discountByDDay * MENU_QUANTITY).isEqualTo(totalDiscount);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 5, 10, 15, 20, 25, 30})
-    @DisplayName("요일 할인이 적용되지 않은 경우의 총 할인액 (적용될 Enum 별로 테스트 필요)")
-    void totalDiscount_NO_DAY_OF_WEEK_DISCOUNT(int day) {
-        OrderDay orderDay = new OrderDay(day);
-
-        int discountByDDay = order.discountByDDay(orderDay);
-
-        int totalDiscount = order.getTotalDiscount(orderDay);
-        assertThat(discountByDDay * MENU_QUANTITY).isEqualTo(totalDiscount);
-    }
-
-    @ParameterizedTest
     @ValueSource(ints = {1, 2, 8, 9, 15, 16, 22, 23, 29, 30})
-    @DisplayName("주말 할인이 적용된 경우의 총 할인액 (적용될 Enum 별로 테스트 필요)")
-    void totalDiscount(int day) {
+    @DisplayName("주말 할인이 적용된 경우의 총 할인액 - 메인메뉴에 적용된다.")
+    void totalDiscount_WEEKEND(int day) {
         OrderDay orderDay = new OrderDay(day);
 
         for (Main mainMenu : Main.values()) {
             order = new Order(mainMenu, MENU_QUANTITY);
 
-            int discountByDDay = order.discountByDDay(orderDay);
+            int totalDiscount = order.getTotalDiscount(orderDay);
             int discountByDayOfWeek = 2_023; // 명세에 요구된 금액.
 
-            int totalDiscount = order.getTotalDiscount(orderDay);
-            int estimatedTotalDiscount = discountByDDay + discountByDayOfWeek;
-
-            assertThat(estimatedTotalDiscount * MENU_QUANTITY).isEqualTo(totalDiscount);
+            assertThat(totalDiscount).isEqualTo(discountByDayOfWeek * MENU_QUANTITY);
         }
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28, 31})
+    @DisplayName("평일 할인이 적용된 경우의 총 할인액 - 디저트에 적용된다.")
+    void totalDiscount_WEEK_DAY(int day) {
+        OrderDay orderDay = new OrderDay(day);
+
+        for (Dessert dessert : Dessert.values()) {
+            order = new Order(dessert, MENU_QUANTITY);
+
+            int totalDiscount = order.getTotalDiscount(orderDay);
+            int discountByDayOfWeek = 2_023; // 명세에 요구된 금액.
+
+            assertThat(totalDiscount).isEqualTo(discountByDayOfWeek * MENU_QUANTITY);
+        }
+    }
+
 }
