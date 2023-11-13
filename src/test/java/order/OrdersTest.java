@@ -1,6 +1,7 @@
 package order;
 
 import date.OrderDay;
+import menu.category.Appetizer;
 import menu.category.Beverage;
 import menu.category.Dessert;
 import menu.category.Main;
@@ -69,5 +70,32 @@ class OrdersTest {
         int orderAmount = orders.getOrderAmount(); // 원래 총 금액
         int totalDiscount = orders.getTotalDiscount(orderDay); // 총 할인액
         assertThat(finalPrice).isEqualTo(orderAmount - totalDiscount);
+    }
+
+    @Test
+    @DisplayName("12만원 이상 주문하면 증점품 지급이 가능하다")
+    void isFreeGiftApplicable() {
+        Order mainOrder = new Order(Main.CHRISTMAS_PASTA, 4); // 10만원
+        Order dessertOrder = new Order(Dessert.ICE_CREAM, 4); // 2만원, 도합 12만원
+        orders = new Orders(List.of(mainOrder, dessertOrder));
+        assertThat(orders.isFreeGiftApplicable()).isTrue();
+    }
+
+    @Test
+    @DisplayName("음료만 주문한 경우 금액이 기준을 넘어도 증정품 지급이 불가능하다.")
+    void isFreeGiftApplicable_ONLY_BEVERAGE() {
+        Order order = new Order(Beverage.CHAMPAGNE, 5);
+        orders = new Orders(List.of(order));
+        assertThat(orders.isFreeGiftApplicable()).isFalse();
+    }
+
+    @Test
+    @DisplayName("12만원 미만으로 주문하면 증점품을 지급하지 않는다.")
+    void isFreeGiftApplicable_UNDER_STANDARD() {
+        Order mainOrder = new Order(Main.CHRISTMAS_PASTA, 4); // 10만원
+        Order tapasOrder = new Order(Appetizer.TAPAS, 2); // 1만 1000원
+        Order caesarSaladOrder = new Order(Appetizer.CAESAR_SALAD, 1); // 8000 원 -> 도합 199_000 원
+        orders = new Orders(List.of(mainOrder, tapasOrder, caesarSaladOrder));
+        assertThat(orders.isFreeGiftApplicable()).isFalse();
     }
 }
