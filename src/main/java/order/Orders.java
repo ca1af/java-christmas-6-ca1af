@@ -9,6 +9,7 @@ import java.util.List;
 public class Orders {
     private static final int NO_DISCOUNT = 0;
     private static final int MINIMUM_ORDER_AMOUNT_FOR_DISCOUNT = 10000;
+    private static final int STAR_DAY_DISCOUNT = 1_000;
     private static final int FREE_GIFT_STANDARD = 120_000;
     private final List<Order> orders;
     public Orders(List<Order> orders) {
@@ -32,9 +33,18 @@ public class Orders {
         if (isOrderBelowMinimumOrderAmountOfDiscount()){
             return NO_DISCOUNT;
         }
-        return orders.stream()
+        int starDayDiscount = getStarDayDiscount(orderDay);
+
+        return starDayDiscount + orders.stream()
                 .mapToInt(order -> order.getTotalDiscount(orderDay))
                 .sum();
+    }
+
+    private int getStarDayDiscount(OrderDay orderDay){
+        if (orderDay.isStarDay()){
+            return STAR_DAY_DISCOUNT;
+        }
+        return NO_DISCOUNT;
     }
 
     public boolean isFreeGiftApplicable(){

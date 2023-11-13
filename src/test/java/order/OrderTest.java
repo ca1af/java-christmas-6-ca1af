@@ -39,6 +39,7 @@ class OrderTest {
     }
 
     @Test
+    @DisplayName("상위 추상 Menu 타입으로 넣어도 하위 구상 Enum 으로 잘 들어오는지 확인")
     void getMenuTest() {
         order = new Order(Beverage.CHAMPAGNE, 1);
         assertThat(order.getMenu()).isEqualTo(Beverage.CHAMPAGNE);
@@ -69,26 +70,6 @@ class OrderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {3, 10, 17, 24, 25, 31})
-    @DisplayName("달력에 별이 찍힌 날(starDay) 할인이 정상 적용됨을 확인")
-    void discountByStarDay(int day) {
-        OrderDay orderDay = new OrderDay(day);
-        
-        int discountByStarDay = order.discountByStarDay(orderDay);
-        assertThat(discountByStarDay).isEqualTo(1000);
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {1, 2, 4, 26, 29})
-    @DisplayName("달력에 별이 찍힌 날(starDay) 할인이 적용되지 않아야함")
-    void discountByStarDay_NONE(int day) {
-        OrderDay orderDay = new OrderDay(day);
-        
-        int discountByStarDay = order.discountByStarDay(orderDay);
-        assertThat(discountByStarDay).isZero();
-    }
-
-    @ParameterizedTest
     @ValueSource(ints = {1, 5, 10, 15, 20, 25})
     @DisplayName("D-DAY 할인의 적용률 테스트")
     void discountByDDay(int day) {
@@ -115,11 +96,9 @@ class OrderTest {
         OrderDay orderDay = new OrderDay(day);
         
         int discountByDDay = order.discountByDDay(orderDay);
-        int discountByStarDay = order.discountByStarDay(orderDay); // beforeEach 로 false 설정
         int totalDiscount = order.getTotalDiscount(orderDay);
 
-        int estimatedTotal = discountByDDay + discountByStarDay;
-        assertThat(estimatedTotal * MENU_QUANTITY).isEqualTo(totalDiscount);
+        assertThat(discountByDDay * MENU_QUANTITY).isEqualTo(totalDiscount);
     }
 
     @ParameterizedTest
@@ -129,11 +108,9 @@ class OrderTest {
         OrderDay orderDay = new OrderDay(day);
 
         int discountByDDay = order.discountByDDay(orderDay);
-        int discountByStarDay = order.discountByStarDay(orderDay);
 
         int totalDiscount = order.getTotalDiscount(orderDay);
-        int estimatedTotalDiscount = discountByDDay + discountByStarDay;
-        assertThat(estimatedTotalDiscount * MENU_QUANTITY).isEqualTo(totalDiscount);
+        assertThat(discountByDDay * MENU_QUANTITY).isEqualTo(totalDiscount);
     }
 
     @ParameterizedTest
@@ -146,11 +123,10 @@ class OrderTest {
             order = new Order(mainMenu, MENU_QUANTITY);
 
             int discountByDDay = order.discountByDDay(orderDay);
-            int discountByStarDay = order.discountByStarDay(orderDay);
             int discountByDayOfWeek = 2_023; // 명세에 요구된 금액.
 
             int totalDiscount = order.getTotalDiscount(orderDay);
-            int estimatedTotalDiscount = discountByDDay + discountByStarDay + discountByDayOfWeek;
+            int estimatedTotalDiscount = discountByDDay + discountByDayOfWeek;
 
             assertThat(estimatedTotalDiscount * MENU_QUANTITY).isEqualTo(totalDiscount);
         }

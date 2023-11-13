@@ -25,6 +25,18 @@ class OrdersTest {
         main = new Order(Main.BARBEQUE_RIB, 5);
         orders = new Orders(List.of(beverage, main));
     }
+
+    @Test
+    @DisplayName("방어적 복사를 테스트")
+    void defensive_copy_test() {
+        List<Order> orders1 = orders.getOrders();
+        orders1.add(new Order(Beverage.CHAMPAGNE, 3));
+        // 외부에서 값을 넣거나 빼도, 다시 가져올 때엔 원래 상태인 녀석으로 가져온다
+
+        List<Order> orders2 = orders.getOrders();
+        assertThat(orders1).isNotEqualTo(orders2);
+    }
+
     @Test
     @DisplayName("총 주문 금액(할인 전) 을 구한다.")
     void getOrderAmount() {
@@ -40,8 +52,13 @@ class OrdersTest {
         OrderDay orderDay = new OrderDay(day);
         int beverageTotalDiscount = beverage.getTotalDiscount(orderDay);
         int mainTotalDiscount = main.getTotalDiscount(orderDay);
+        int orderDiscountAmount = beverageTotalDiscount + mainTotalDiscount;
+
         int totalDiscount = orders.getTotalDiscount(orderDay);
-        assertThat(beverageTotalDiscount + mainTotalDiscount).isEqualTo(totalDiscount);
+        if (orderDay.isStarDay()){ // 특별 할인은 총 주문 금액 기준 1000원 할인
+            orderDiscountAmount += 1000;
+        }
+        assertThat(orderDiscountAmount).isEqualTo(totalDiscount);
     }
 
     @Test
