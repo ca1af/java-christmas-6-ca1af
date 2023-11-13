@@ -180,7 +180,7 @@ class OrdersTest {
         orders = new Orders(List.of(mainOrder, dessertOrder));
         int totalBenefit = orders.getTotalBenefit(orderDay);
         int totalDiscount = orders.getTotalDiscount(orderDay);
-        int freeGiftPrice = Beverage.CHAMPAGNE.getPrice();
+        int freeGiftPrice = FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
         assertThat(totalBenefit).isEqualTo(totalDiscount + freeGiftPrice);
     }
 }

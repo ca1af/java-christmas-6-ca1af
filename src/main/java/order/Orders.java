@@ -31,7 +31,7 @@ public class Orders {
 
     public int getTotalBenefit(OrderDay orderDay){
         if (this.isFreeGiftApplicable()){
-            return getTotalDiscount(orderDay) + FreeGift.FREE_GIFT.getPrice();
+            return getTotalDiscount(orderDay) + FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
         }
         return getTotalDiscount(orderDay);
     }
