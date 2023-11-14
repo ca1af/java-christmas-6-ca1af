@@ -18,6 +18,7 @@ public class DiscountDetailOutputView {
     public void printDiscountDetails(Orders orders, OrderDay orderDay){
         System.out.println(DISCOUNT_DETAILS);
         if (isDiscountNotApplicable(orders, orderDay)) {
+            System.out.println(NONE);
             return;
         }
         printDDayDiscount(orders, orderDay);
@@ -27,11 +28,7 @@ public class DiscountDetailOutputView {
     }
 
     private boolean isDiscountNotApplicable(Orders orders, OrderDay orderDay) {
-        if (orders.getTotalDiscount(orderDay) == NO_DISCOUNT){
-            System.out.println(NONE);
-            return true;
-        }
-        return false;
+        return orders.getTotalDiscount(orderDay) == NO_DISCOUNT;
     }
 
     private void printDDayDiscount(Orders orders, OrderDay orderDay) {
