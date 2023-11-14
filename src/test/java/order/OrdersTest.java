@@ -54,8 +54,9 @@ class OrdersTest {
         Order barbequeRib = new Order(Main.BARBEQUE_RIB, 2);
         Order seafoodPasta = new Order(Main.SEAFOOD_PASTA, 2);
         orders = new Orders(List.of(barbequeRib, seafoodPasta));
-        int totalDiscountOfOrder = barbequeRib.getDayOfWeekDiscount(orderDay) + seafoodPasta.getDayOfWeekDiscount(orderDay);
-        assertThat(totalDiscountOfOrder).isEqualTo(orders.getTotalDiscount(orderDay));
+        int orderDiscount = barbequeRib.getDayOfWeekDiscount(orderDay) + seafoodPasta.getDayOfWeekDiscount(orderDay);
+        int dDayDiscount = orders.getDDayDiscount(orderDay);
+        assertThat(orderDiscount + dDayDiscount).isEqualTo(orders.getTotalDiscount(orderDay));
     }
 
     @ParameterizedTest
@@ -81,7 +82,7 @@ class OrdersTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1,2,3,4,5,6,7,8,9,10})
+    @ValueSource(ints = {1,2,3,4,5,6,7,8,9,10,25,31})
     @DisplayName("날짜와 관계없이 order 들의 할인 총액은 orders 의 할인총액과 같다.")
     void getTotalDiscountAmount(int day) {
         OrderDay orderDay = new OrderDay(day);
@@ -92,6 +93,9 @@ class OrdersTest {
         int totalDiscount = orders.getTotalDiscount(orderDay);
         if (orderDay.isStarDay()){ // 특별 할인은 총 주문 금액 기준이므로 한번만 더한다.
             orderDiscountAmount += orders.getStarDayDiscount(orderDay);
+        }
+        if (orderDay.isDDayApplicable()){
+            orderDiscountAmount += orders.getDDayDiscount(orderDay);
         }
         assertThat(orderDiscountAmount).isEqualTo(totalDiscount);
     }
@@ -157,7 +161,7 @@ class OrdersTest {
     void discountByDDay(int day) {
         OrderDay orderDay = new OrderDay(day);
 
-        int discountByDDay = orders.getDiscountByDDay(orderDay);
+        int discountByDDay = orders.getDDayDiscount(orderDay);
         int estimatedDiscount = 1000 + (day - 1) * 100; // 할인 계산식
         assertThat(discountByDDay).isEqualTo(estimatedDiscount);
     }
@@ -168,7 +172,7 @@ class OrdersTest {
     void discountByDDay_NONE(int day) {
         OrderDay orderDay = new OrderDay(day);
 
-        int discountByDDay = orders.getDiscountByDDay(orderDay);
+        int discountByDDay = orders.getDDayDiscount(orderDay);
         assertThat(discountByDDay).isZero();
     }
 
@@ -189,8 +193,7 @@ class OrdersTest {
     @DisplayName("총 혜택금액에 따른 뱃지 부여를 테스트한다.")
     void getBadge() {
         OrderDay orderDay = new OrderDay(25);
-        int totalBenefit = orders.getTotalBenefit(orderDay);
-        Badge badgeByPrice = Badge.getBadgeByPrice(totalBenefit);
-        assertThat(badgeByPrice).isEqualTo(Badge.SANTA);
+        String badge = orders.getBadge(orderDay);
+        assertThat(badge).isEqualTo("산타");
     }
 }

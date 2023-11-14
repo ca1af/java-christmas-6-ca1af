@@ -46,7 +46,7 @@ public class Orders {
         }
         int starDayDiscount = getStarDayDiscount(orderDay);
         int dayOfWeekDiscount = getDayOfWeekDiscount(orderDay);
-        int dDayDiscount = getDiscountByDDay(orderDay);
+        int dDayDiscount = getDDayDiscount(orderDay);
         return dDayDiscount + starDayDiscount + dayOfWeekDiscount;
     }
 
@@ -63,7 +63,7 @@ public class Orders {
         return NO_DISCOUNT;
     }
 
-    public int getDiscountByDDay(OrderDay orderDay){
+    public int getDDayDiscount(OrderDay orderDay){
         if (orderDay.isDDayApplicable()){
             return orderDay.getDDayApplicableDays() * D_DAY_DISCOUNT_AMOUNT_PER_DAY + D_DAY_DISCOUNT_START_PRICE;
         }
@@ -78,9 +78,10 @@ public class Orders {
         return this.getOrderAmount() - this.getTotalDiscount(orderDay);
     }
 
-    public Badge getBadge(OrderDay orderDay){
+    public String getBadge(OrderDay orderDay){
         int totalBenefit = this.getTotalBenefit(orderDay);
-        return Badge.getBadgeByPrice(totalBenefit);
+        Badge badge = Badge.getBadgeByPrice(totalBenefit);
+        return badge.getName();
     }
 
     private boolean isOrderBelowMinimumOrderAmountOfDiscount() {
