@@ -46,12 +46,13 @@ public class Orders {
         }
         int starDayDiscount = getStarDayDiscount(orderDay);
         int dayOfWeekDiscount = getDayOfWeekDiscount(orderDay);
-        return starDayDiscount + dayOfWeekDiscount;
+        int dDayDiscount = getDiscountByDDay(orderDay);
+        return dDayDiscount + starDayDiscount + dayOfWeekDiscount;
     }
 
     public int getDayOfWeekDiscount(OrderDay orderDay) {
         return orders.stream()
-                .mapToInt(order -> order.getTotalDiscount(orderDay))
+                .mapToInt(order -> order.getDayOfWeekDiscount(orderDay))
                 .sum();
     }
 

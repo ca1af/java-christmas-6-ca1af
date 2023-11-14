@@ -54,7 +54,7 @@ class OrdersTest {
         Order barbequeRib = new Order(Main.BARBEQUE_RIB, 2);
         Order seafoodPasta = new Order(Main.SEAFOOD_PASTA, 2);
         orders = new Orders(List.of(barbequeRib, seafoodPasta));
-        int totalDiscountOfOrder = barbequeRib.getTotalDiscount(orderDay) + seafoodPasta.getTotalDiscount(orderDay);
+        int totalDiscountOfOrder = barbequeRib.getDayOfWeekDiscount(orderDay) + seafoodPasta.getDayOfWeekDiscount(orderDay);
         assertThat(totalDiscountOfOrder).isEqualTo(orders.getTotalDiscount(orderDay));
     }
 
@@ -63,8 +63,8 @@ class OrdersTest {
     @DisplayName("요일 할인의 총합을 계산한다.")
     void getDayOfWeekDiscount(int day) {
         OrderDay orderDay = new OrderDay(day);
-        int beverageTotalDiscount = beverage.getTotalDiscount(orderDay);
-        int mainTotalDiscount = main.getTotalDiscount(orderDay);
+        int beverageTotalDiscount = beverage.getDayOfWeekDiscount(orderDay);
+        int mainTotalDiscount = main.getDayOfWeekDiscount(orderDay);
         int orderDiscountAmount = beverageTotalDiscount + mainTotalDiscount;
 
         int totalDiscount = orders.getDayOfWeekDiscount(orderDay);
@@ -85,8 +85,8 @@ class OrdersTest {
     @DisplayName("날짜와 관계없이 order 들의 할인 총액은 orders 의 할인총액과 같다.")
     void getTotalDiscountAmount(int day) {
         OrderDay orderDay = new OrderDay(day);
-        int beverageTotalDiscount = beverage.getTotalDiscount(orderDay);
-        int mainTotalDiscount = main.getTotalDiscount(orderDay);
+        int beverageTotalDiscount = beverage.getDayOfWeekDiscount(orderDay);
+        int mainTotalDiscount = main.getDayOfWeekDiscount(orderDay);
         int orderDiscountAmount = beverageTotalDiscount + mainTotalDiscount;
 
         int totalDiscount = orders.getTotalDiscount(orderDay);

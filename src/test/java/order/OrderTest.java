@@ -79,7 +79,7 @@ class OrderTest {
         for (Main mainMenu : Main.values()) {
             order = new Order(mainMenu, MENU_QUANTITY);
 
-            int totalDiscount = order.getTotalDiscount(orderDay);
+            int totalDiscount = order.getDayOfWeekDiscount(orderDay);
             int discountByDayOfWeek = 2_023; // 명세에 요구된 금액.
 
             assertThat(totalDiscount).isEqualTo(discountByDayOfWeek * MENU_QUANTITY);
@@ -95,7 +95,7 @@ class OrderTest {
         for (Dessert dessert : Dessert.values()) {
             order = new Order(dessert, MENU_QUANTITY);
 
-            int totalDiscount = order.getTotalDiscount(orderDay);
+            int totalDiscount = order.getDayOfWeekDiscount(orderDay);
             int discountByDayOfWeek = 2_023; // 명세에 요구된 금액.
 
             assertThat(totalDiscount).isEqualTo(discountByDayOfWeek * MENU_QUANTITY);

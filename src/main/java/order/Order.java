@@ -30,12 +30,12 @@ public class Order {
         return this.menu.getPrice() * menuQuantity;
     }
 
-    public int getTotalDiscount(OrderDay orderDay){
-        int dayOfWeekDiscount = getDayOfWeekDiscount(orderDay);
+    public int getDayOfWeekDiscount(OrderDay orderDay){
+        int dayOfWeekDiscount = calculateDayOfWeekDiscount(orderDay);
         return dayOfWeekDiscount * menuQuantity;
     }
 
-    private int getDayOfWeekDiscount(OrderDay orderDay) {
+    private int calculateDayOfWeekDiscount(OrderDay orderDay) {
         int dayOfWeekDiscount = NO_DISCOUNT;
         if (menu.isDayOfWeekApplicable(orderDay)) {
             dayOfWeekDiscount = DAY_OF_WEEK_DISCOUNT;
