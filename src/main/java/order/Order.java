@@ -6,12 +6,20 @@ import menu.Menu;
 public class Order {
     private static final int DAY_OF_WEEK_DISCOUNT = 2_023;
     private static final int NO_DISCOUNT = 0;
+    private static final int MAX_MENU_QUANTITY = 20;
     private final Menu menu;
     private final int menuQuantity;
 
     public Order(Menu menu, int menuQuantity) {
         this.menu = menu;
+        this.validateMenuQuantity(menuQuantity);
         this.menuQuantity = menuQuantity;
+    }
+
+    private void validateMenuQuantity(int menuQuantity){
+        if (menuQuantity > MAX_MENU_QUANTITY){
+            throw new IllegalArgumentException();
+        }
     }
 
     public Menu getMenu() {

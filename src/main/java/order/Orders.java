@@ -17,11 +17,24 @@ public class Orders {
     private static final int D_DAY_DISCOUNT_AMOUNT_PER_DAY = 100;
     private final List<Order> orders;
     public Orders(List<Order> orders) {
+        validateOrders(orders);
         this.orders = orders;
     }
 
     public List<Order> getOrders() {
         return new ArrayList<>(orders);
+    }
+
+    public void validateOrders(List<Order> orders){
+        if (containsOnlyBeverages(orders)){
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private boolean containsOnlyBeverages(List<Order> orders) {
+        return orders.stream()
+                .filter(order -> order.getMenu() instanceof Beverage)
+                .count() == orders.size();
     }
 
     public int getOrderAmount() {
@@ -38,9 +51,6 @@ public class Orders {
     }
 
     public int getTotalDiscount(OrderDay orderDay) {
-        if (containsOnlyBeverages()){
-            return NO_DISCOUNT;
-        }
         if (isOrderBelowMinimumOrderAmountOfDiscount()){
             return NO_DISCOUNT;
         }
@@ -71,7 +81,7 @@ public class Orders {
     }
 
     public boolean isFreeGiftApplicable(){
-        return !this.containsOnlyBeverages() && this.getOrderAmount() >= FREE_GIFT_STANDARD;
+        return this.getOrderAmount() >= FREE_GIFT_STANDARD;
     }
 
     public int getFinalPrice(OrderDay orderDay) {
@@ -88,11 +98,5 @@ public class Orders {
         return this.orders.stream()
                 .mapToInt(Order::getOrderAmount)
                 .sum() < MINIMUM_ORDER_AMOUNT_FOR_DISCOUNT;
-    }
-
-    private boolean containsOnlyBeverages() {
-        return orders.stream()
-                .filter(order -> order.getMenu() instanceof Beverage)
-                .count() == orders.size();
     }
 }

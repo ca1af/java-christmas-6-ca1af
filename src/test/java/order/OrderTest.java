@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class OrderTest {
     private Order order;
@@ -37,6 +38,14 @@ class OrderTest {
         };
 
         order = new Order(menu, MENU_QUANTITY);
+    }
+
+    @Test
+    @DisplayName("메뉴 갯수가 20개 이상이면 안된다.")
+    void validateMenuQuantity() {
+        Main barbequeRib = Main.BARBEQUE_RIB;
+        assertThatThrownBy(() -> new Order(barbequeRib, 21))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

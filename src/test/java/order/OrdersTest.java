@@ -1,7 +1,6 @@
 package order;
 
 import date.OrderDay;
-import gift.Badge;
 import gift.FreeGift;
 import menu.category.Appetizer;
 import menu.category.Beverage;
@@ -16,6 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class OrdersTest {
     private Order beverage;
@@ -101,12 +101,11 @@ class OrdersTest {
     }
 
     @Test
-    @DisplayName("음료만 주문하면 금액이 얼마든 할인하지 않는다.")
+    @DisplayName("음료만 주문하는 것은 불가능하다.")
     void NO_DISCOUNT_ON_ONLY_BEVERAGES() {
-        OrderDay orderDay = new OrderDay(25); // D-Day, Star 할인이 적용된다 ( total 4400 )
         Order order = new Order(Beverage.CHAMPAGNE, 5); // 5개이므로 22000 할인이어야 하지만, 음료만주문이므로 0
-        orders = new Orders(List.of(order));
-        assertThat(orders.getTotalDiscount(orderDay)).isZero();
+        List<Order> orders = List.of(order);
+        assertThatThrownBy(() -> new Orders(orders)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
@@ -135,14 +134,6 @@ class OrdersTest {
         Order dessertOrder = new Order(Dessert.ICE_CREAM, 4); // 2만원, 도합 12만원
         orders = new Orders(List.of(mainOrder, dessertOrder));
         assertThat(orders.isFreeGiftApplicable()).isTrue();
-    }
-
-    @Test
-    @DisplayName("음료만 주문한 경우 금액이 기준을 넘어도 증정품 지급이 불가능하다.")
-    void isFreeGiftApplicable_ONLY_BEVERAGE() {
-        Order order = new Order(Beverage.CHAMPAGNE, 5);
-        orders = new Orders(List.of(order));
-        assertThat(orders.isFreeGiftApplicable()).isFalse();
     }
 
     @Test
