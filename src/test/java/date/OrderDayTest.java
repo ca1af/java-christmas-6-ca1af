@@ -8,8 +8,17 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class OrderDayTest {
+
+    @ParameterizedTest
+    @ValueSource(ints = {-10, -1, 0, 32, 35, 100, 1000})
+    @DisplayName("1~31 사이의 숫자만 입력 가능하다.")
+    void validate(int day) {
+        assertThatThrownBy(() -> new OrderDay(day)).isInstanceOf(IllegalArgumentException.class);
+    }
+
     @Test
     @DisplayName("자바 Calender 객체를 이용해서 요일을 계산 : 2023.12.3 은 일요일(1) 이다.")
     void java_dayOfWeek_test() {

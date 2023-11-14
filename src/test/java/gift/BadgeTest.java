@@ -1,12 +1,21 @@
 package gift;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class BadgeTest {
+    @ParameterizedTest
+    @ValueSource(ints = {-1, -100, -1000, -10000})
+    @DisplayName("음수의 값을 판별할 수 없다.")
+    void name(int price) {
+        assertThatThrownBy(() -> Badge.getBadgeByPrice(price)).isInstanceOf(IllegalArgumentException.class);
+    }
+
 
     @ParameterizedTest
     @ValueSource(ints = {0,4999})
