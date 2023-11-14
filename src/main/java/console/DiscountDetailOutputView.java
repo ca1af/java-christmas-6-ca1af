@@ -32,7 +32,7 @@ public class DiscountDetailOutputView {
     }
 
     private void printDDayDiscount(Orders orders, OrderDay orderDay) {
-        int discountByDDay = orders.getDiscountByDDay(orderDay);
+        int discountByDDay = orders.getDDayDiscount(orderDay);
         if (discountByDDay != NO_DISCOUNT){
             System.out.println(getDiscountMessage(D_DAY_DISCOUNT, discountByDDay));
         }
