@@ -15,9 +15,10 @@ public class Orders {
     private static final int FREE_GIFT_STANDARD = 120_000;
     private static final int D_DAY_DISCOUNT_START_PRICE = 1000;
     private static final int D_DAY_DISCOUNT_AMOUNT_PER_DAY = 100;
+    private static final int MAX_MENU_QUANTITY = 20;
     private final List<Order> orders;
     public Orders(List<Order> orders) {
-        validateOrders(orders);
+        validate(orders);
         this.orders = orders;
     }
 
@@ -25,10 +26,19 @@ public class Orders {
         return new ArrayList<>(orders);
     }
 
-    public void validateOrders(List<Order> orders){
+    public void validate(List<Order> orders){
         if (containsOnlyBeverages(orders)){
             throw new IllegalArgumentException();
         }
+        if (isQuantityExceeded(orders)){
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private boolean isQuantityExceeded(List<Order> orders){
+        return orders.stream()
+                .mapToInt(Order::getMenuQuantity)
+                .sum() > MAX_MENU_QUANTITY;
     }
 
     private boolean containsOnlyBeverages(List<Order> orders) {

@@ -40,6 +40,21 @@ class OrdersTest {
     }
 
     @Test
+    @DisplayName("음료만 주문하는 것은 불가능하다.")
+    void validate_containsOnlyBeverages() {
+        Order order = new Order(Beverage.CHAMPAGNE, 5);
+        List<Order> orders = List.of(order);
+        assertThatThrownBy(() -> new Orders(orders)).isInstanceOf(IllegalArgumentException.class);
+    }
+    @Test
+    @DisplayName("20개 이상 주문은 불가능하다.")
+    void validate_isQuantityExceeded(){
+        Order order = new Order(Main.BARBEQUE_RIB, 21);
+        List<Order> orders = List.of(order);
+        assertThatThrownBy(() -> new Orders(orders)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     @DisplayName("총 주문 금액(할인 전) 을 구한다.")
     void getOrderAmount() {
         int beverageOrderAmount = beverage.getOrderAmount();
@@ -98,14 +113,6 @@ class OrdersTest {
             orderDiscountAmount += orders.getDDayDiscount(orderDay);
         }
         assertThat(orderDiscountAmount).isEqualTo(totalDiscount);
-    }
-
-    @Test
-    @DisplayName("음료만 주문하는 것은 불가능하다.")
-    void NO_DISCOUNT_ON_ONLY_BEVERAGES() {
-        Order order = new Order(Beverage.CHAMPAGNE, 5); // 5개이므로 22000 할인이어야 하지만, 음료만주문이므로 0
-        List<Order> orders = List.of(order);
-        assertThatThrownBy(() -> new Orders(orders)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test

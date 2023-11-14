@@ -41,14 +41,6 @@ class OrderTest {
     }
 
     @Test
-    @DisplayName("메뉴 갯수가 20개 이상이면 안된다.")
-    void validateMenuQuantity() {
-        Main barbequeRib = Main.BARBEQUE_RIB;
-        assertThatThrownBy(() -> new Order(barbequeRib, 21))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
     @DisplayName("상위 추상 Menu 타입으로 넣어도 하위 구상 Enum 으로 잘 들어오는지 확인")
     void getMenuTest() {
         order = new Order(Beverage.CHAMPAGNE, 1);
