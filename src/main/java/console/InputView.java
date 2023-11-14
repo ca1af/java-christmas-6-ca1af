@@ -11,13 +11,9 @@ import order.Orders;
 import java.util.Arrays;
 import java.util.List;
 
+import static console.OutputConstants.*;
+
 public class InputView {
-    private static final String INPUT_ESTIMATED_DATE_OF_ARRIVAL = "12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)";
-    private static final String INPUT_MENU_NAME_AND_QUANTITY = "주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)";
-    private static final String SPACE = "\\s";
-    private static final String EMPTY_LINE = "";
-    private static final String NAME_QUANTITY_SPLIT_DELIMITER = "-";
-    private static final String ORDER_SPLIT_DELIMITER = ",";
     private static final int MINIMUM_AMOUNT_OF_ORDER = 1;
     private static final int STANDARD_LENGTH_OF_ORDER = 2;
 
@@ -62,7 +58,7 @@ public class InputView {
         if (menuNameAndQuantity.length != STANDARD_LENGTH_OF_ORDER) {
             throw new IllegalArgumentException();
         }
-        String menuName = menuNameAndQuantity[0].replaceAll(SPACE, EMPTY_LINE);
+        String menuName = menuNameAndQuantity[0].replaceAll(SPACE_REGULAR_EXPRESSION, EMPTY_LINE);
         String menuQuantity = menuNameAndQuantity[1];
         int quantity = getIntegerValue(menuQuantity);
         Menu menu = MenuFactory.getMenu(menuName);
@@ -71,7 +67,7 @@ public class InputView {
 
     private int getIntegerValue(String userInput) {
         try {
-            String userInputWithNoSpace = userInput.replaceAll(SPACE, EMPTY_LINE);
+            String userInputWithNoSpace = userInput.replaceAll(SPACE_REGULAR_EXPRESSION, EMPTY_LINE);
             return Integer.parseInt(userInputWithNoSpace);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException();

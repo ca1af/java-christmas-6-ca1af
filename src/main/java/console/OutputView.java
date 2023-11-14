@@ -6,20 +6,9 @@ import order.Orders;
 
 import java.util.List;
 
+import static console.OutputConstants.*;
+
 public class OutputView {
-    private static final String GREETINGS = "안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.";
-    private static final String BENEFIT_PREVIEW = "12월 26일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!";
-    private static final String ORDER_MENU = "<주문 메뉴>";
-    private static final String SPACE = " ";
-    private static final String ORDER_AMOUNT = "<할인 전 총주문 금액>";
-    private static final String WON = "원";
-    private static final String FREE_GIFT = "<증정 메뉴>";
-    private static final String FREE_GIFT_CHAMPAIGN = "샴페인 1개";
-    private static final String NONE = "없음";
-    private static final String TOTAL_BENEFIT = "<총혜택 금액>";
-    private static final String ACTUAL_TOTAL_PRICE = "<할인 후 예상 결제 금액>";
-    private static final String EVENT_BADGE = "<12월 이벤트 배지>";
-    private static final String MINUS = "-";
     public void printGreetings(){
         System.out.println(GREETINGS);
     }
@@ -35,8 +24,9 @@ public class OutputView {
 
     public void printOrderAmountBeforeBenefit(Orders orders){
         System.out.println(ORDER_AMOUNT);
-        String orderAmount = orders.getOrderAmount() + WON;
-        System.out.println(orderAmount);
+        int orderAmount = orders.getOrderAmount();
+        String formattedOrderAmount = Formatter.formatPrice(orderAmount);
+        System.out.println(formattedOrderAmount + WON);
     }
 
     public void printFreeGift(Orders orders){
@@ -47,13 +37,16 @@ public class OutputView {
 
     public void printTotalBenefit(Orders orders, OrderDay orderDay){
         System.out.println(TOTAL_BENEFIT);
-        System.out.println(MINUS + orders.getTotalBenefit(orderDay) + WON);
+        int totalBenefit = orders.getTotalBenefit(orderDay);
+        String formattedTotalBenefit = Formatter.formatPrice(totalBenefit);
+        System.out.println(MINUS + formattedTotalBenefit + WON);
     }
 
     public void printActualTotalPrice(Orders orders, OrderDay orderDay){
         System.out.println(ACTUAL_TOTAL_PRICE);
         int actualTotalPrice = orders.getOrderAmount() - orders.getTotalDiscount(orderDay);
-        System.out.println(actualTotalPrice + WON);
+        String formatPrice = Formatter.formatPrice(actualTotalPrice);
+        System.out.println(formatPrice + WON);
     }
 
     public void printEventBadge(Orders orders, OrderDay orderDay){
@@ -64,7 +57,7 @@ public class OutputView {
     private void printOrderMenu(Order order){
         String menuName = order.getMenuName();
         int menuQuantity = order.getMenuQuantity();
-        System.out.println(menuName + SPACE + menuQuantity);
+        System.out.println(menuName + SPACE + menuQuantity + UNIT_SUFFIX);
     }
 
     private String getFreeGift(Orders orders) {
