@@ -37,6 +37,7 @@ public class ChristmasController {
         outputView.printGreetings();
         OrderDay orderDay = inputView.readDate();
         Orders userOrders = inputView.readOrders();
+        outputView.printBenefitPreview();
         return new UserOrderDetail(orderDay, userOrders);
     }
 
