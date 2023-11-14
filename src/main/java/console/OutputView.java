@@ -19,6 +19,7 @@ public class OutputView {
     private static final String TOTAL_BENEFIT = "<총혜택 금액>";
     private static final String ACTUAL_TOTAL_PRICE = "<할인 후 예상 결제 금액>";
     private static final String EVENT_BADGE = "<12월 이벤트 배지>";
+    private static final String MINUS = "-";
     public void printGreetings(){
         System.out.println(GREETINGS);
     }
@@ -32,7 +33,7 @@ public class OutputView {
         userOrders.forEach(this::printOrderMenu);
     }
 
-    public void printGetOrderAmount(Orders orders){
+    public void printOrderAmountBeforeBenefit(Orders orders){
         System.out.println(ORDER_AMOUNT);
         String orderAmount = orders.getOrderAmount() + WON;
         System.out.println(orderAmount);
@@ -46,7 +47,7 @@ public class OutputView {
 
     public void printTotalBenefit(Orders orders, OrderDay orderDay){
         System.out.println(TOTAL_BENEFIT);
-        System.out.println(orders.getTotalBenefit(orderDay) + WON);
+        System.out.println(MINUS + orders.getTotalBenefit(orderDay) + WON);
     }
 
     public void printActualTotalPrice(Orders orders, OrderDay orderDay){
