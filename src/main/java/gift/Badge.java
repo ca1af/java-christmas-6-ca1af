@@ -17,14 +17,6 @@ public enum Badge {
         this.name = name;
     }
 
-    public int getStandardPrice() {
-        return standardPrice;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     private static List<Badge> sortedByPriceDescending() {
         return Arrays.stream(values())
                 .sorted(Comparator.comparingInt(Badge::getStandardPrice).reversed())
@@ -38,5 +30,13 @@ public enum Badge {
             }
         }
         throw new IllegalArgumentException(); // 입력된 benefitAmount 는 음수일 수 없다.
+    }
+
+    public int getStandardPrice() {
+        return standardPrice;
+    }
+
+    public String getName() {
+        return name;
     }
 }

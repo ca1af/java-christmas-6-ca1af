@@ -18,18 +18,6 @@ public class Order {
         return menu;
     }
 
-    public String getMenuName(){
-        return this.menu.getName();
-    }
-
-    public int getMenuQuantity(){
-        return this.menuQuantity;
-    }
-
-    public int getOrderAmount(){
-        return this.menu.getPrice() * menuQuantity;
-    }
-
     public int getDayOfWeekDiscount(OrderDay orderDay){
         int dayOfWeekDiscount = calculateDayOfWeekDiscount(orderDay);
         return dayOfWeekDiscount * menuQuantity;
@@ -41,5 +29,17 @@ public class Order {
             dayOfWeekDiscount = DAY_OF_WEEK_DISCOUNT;
         }
         return dayOfWeekDiscount;
+    }
+
+    public String getMenuName(){
+        return this.menu.getName();
+    }
+
+    public int getMenuQuantity(){
+        return this.menuQuantity;
+    }
+
+    public int getOrderAmount(){
+        return this.menu.getPrice() * menuQuantity;
     }
 }

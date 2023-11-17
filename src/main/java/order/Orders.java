@@ -22,10 +22,6 @@ public class Orders {
         this.orders = orders;
     }
 
-    public List<Order> getOrders() {
-        return new ArrayList<>(orders);
-    }
-
     public void validate(List<Order> orders){
         if (containsOnlyBeverages(orders)){
             throw new IllegalArgumentException();
@@ -47,17 +43,25 @@ public class Orders {
                 .count() == orders.size();
     }
 
+    public int getTotalBenefit(OrderDay orderDay){
+        if (this.isFreeGiftApplicable()){
+            return getTotalDiscount(orderDay) + FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
+        }
+        return getTotalDiscount(orderDay);
+    }
+
+    public boolean isFreeGiftApplicable(){
+        return this.getOrderAmount() >= FREE_GIFT_STANDARD;
+    }
+
     public int getOrderAmount() {
         return orders.stream()
                 .mapToInt(Order::getOrderAmount)
                 .sum();
     }
 
-    public int getTotalBenefit(OrderDay orderDay){
-        if (this.isFreeGiftApplicable()){
-            return getTotalDiscount(orderDay) + FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
-        }
-        return getTotalDiscount(orderDay);
+    public int getFinalPrice(OrderDay orderDay) {
+        return this.getOrderAmount() - this.getTotalDiscount(orderDay);
     }
 
     public int getTotalDiscount(OrderDay orderDay) {
@@ -70,10 +74,10 @@ public class Orders {
         return dDayDiscount + starDayDiscount + dayOfWeekDiscount;
     }
 
-    public int getDayOfWeekDiscount(OrderDay orderDay) {
-        return orders.stream()
-                .mapToInt(order -> order.getDayOfWeekDiscount(orderDay))
-                .sum();
+    private boolean isOrderBelowMinimumOrderAmountOfDiscount() {
+        return this.orders.stream()
+                .mapToInt(Order::getOrderAmount)
+                .sum() < MINIMUM_ORDER_AMOUNT_FOR_DISCOUNT;
     }
 
     public int getStarDayDiscount(OrderDay orderDay){
@@ -83,19 +87,17 @@ public class Orders {
         return NO_DISCOUNT;
     }
 
+    public int getDayOfWeekDiscount(OrderDay orderDay) {
+        return orders.stream()
+                .mapToInt(order -> order.getDayOfWeekDiscount(orderDay))
+                .sum();
+    }
+
     public int getDDayDiscount(OrderDay orderDay){
         if (orderDay.isDDayApplicable()){
             return orderDay.getDDayApplicableDays() * D_DAY_DISCOUNT_AMOUNT_PER_DAY + D_DAY_DISCOUNT_START_PRICE;
         }
         return NO_DISCOUNT;
-    }
-
-    public boolean isFreeGiftApplicable(){
-        return this.getOrderAmount() >= FREE_GIFT_STANDARD;
-    }
-
-    public int getFinalPrice(OrderDay orderDay) {
-        return this.getOrderAmount() - this.getTotalDiscount(orderDay);
     }
 
     public String getBadge(OrderDay orderDay){
@@ -104,9 +106,7 @@ public class Orders {
         return badge.getName();
     }
 
-    private boolean isOrderBelowMinimumOrderAmountOfDiscount() {
-        return this.orders.stream()
-                .mapToInt(Order::getOrderAmount)
-                .sum() < MINIMUM_ORDER_AMOUNT_FOR_DISCOUNT;
+    public List<Order> getOrders() {
+        return new ArrayList<>(orders);
     }
 }
