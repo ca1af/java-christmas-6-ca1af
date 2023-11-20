@@ -26,13 +26,13 @@ public record Orders(List<Order> orders) {
 
     private boolean isQuantityExceeded(List<Order> orders) {
         return orders.stream()
-                .mapToInt(Order::getMenuQuantity)
+                .mapToInt(Order::menuQuantity)
                 .sum() > MAX_MENU_QUANTITY;
     }
 
     private boolean containsOnlyBeverages(List<Order> orders) {
         return orders.stream()
-                .filter(order -> order.getMenu() instanceof Beverage)
+                .filter(order -> order.menu() instanceof Beverage)
                 .count() == orders.size();
     }
 

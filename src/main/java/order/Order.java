@@ -6,20 +6,9 @@ import menu.Menu;
 import static benefit.DiscountConstant.DAY_OF_WEEK_DISCOUNT;
 import static benefit.DiscountConstant.NO_DISCOUNT;
 
-public class Order {
-    private final Menu menu;
-    private final int menuQuantity;
+public record Order(Menu menu, int menuQuantity) {
 
-    public Order(Menu menu, int menuQuantity) {
-        this.menu = menu;
-        this.menuQuantity = menuQuantity;
-    }
-
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public int getDayOfWeekDiscount(OrderDay orderDay){
+    public int getDayOfWeekDiscount(OrderDay orderDay) {
         int dayOfWeekDiscount = calculateDayOfWeekDiscount(orderDay);
         return dayOfWeekDiscount * menuQuantity;
     }
@@ -32,15 +21,11 @@ public class Order {
         return dayOfWeekDiscount;
     }
 
-    public String getMenuName(){
+    public String getMenuName() {
         return this.menu.getName();
     }
 
-    public int getMenuQuantity(){
-        return this.menuQuantity;
-    }
-
-    public int getOrderAmount(){
+    public int getOrderAmount() {
         return this.menu.getPrice() * menuQuantity;
     }
 }

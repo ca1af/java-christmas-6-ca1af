@@ -34,7 +34,7 @@ public class DiscountCalculator {
     }
 
     public int getTotalDiscount(OrderDay orderDay) {
-        if (isOrderBelowMinimumOrderAmountOfDiscount()){
+        if (orders.isOrderBelowMinimumOrderAmountOfDiscount()){
             return NO_DISCOUNT;
         }
         int starDayDiscount = getStarDayDiscount(orderDay);
@@ -45,10 +45,6 @@ public class DiscountCalculator {
 
     public int getActualTotalPrice(OrderDay orderDay){
         return orders.getOrderAmount() - getTotalDiscount(orderDay);
-    }
-
-    private boolean isOrderBelowMinimumOrderAmountOfDiscount() {
-        return orders.isOrderBelowMinimumOrderAmountOfDiscount();
     }
 
     public int getStarDayDiscount(OrderDay orderDay){

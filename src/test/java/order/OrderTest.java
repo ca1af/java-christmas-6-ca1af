@@ -44,7 +44,7 @@ class OrderTest {
     @DisplayName("상위 추상 Menu 타입으로 넣어도 하위 구상 Enum 으로 잘 들어오는지 확인")
     void getMenuTest() {
         order = new Order(Beverage.CHAMPAGNE, 1);
-        assertThat(order.getMenu()).isEqualTo(Beverage.CHAMPAGNE);
+        assertThat(order.menu()).isEqualTo(Beverage.CHAMPAGNE);
     }
 
     @ParameterizedTest

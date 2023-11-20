@@ -57,7 +57,7 @@ public class OutputView {
 
     private void printOrderMenu(Order order){
         String menuName = order.getMenuName();
-        int menuQuantity = order.getMenuQuantity();
+        int menuQuantity = order.menuQuantity();
         System.out.println(menuName + SPACE + menuQuantity + UNIT_SUFFIX);
     }
 
