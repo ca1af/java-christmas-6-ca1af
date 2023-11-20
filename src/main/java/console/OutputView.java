@@ -62,7 +62,7 @@ public class OutputView {
     }
 
     private String getFreeGift(DiscountCalculator discountCalculator) {
-        if (discountCalculator.isFreeGiftApplicable()){
+        if (discountCalculator.getFreeGiftBenefit() != 0){
             return FREE_GIFT_CHAMPAIGN;
         }
         return NONE;

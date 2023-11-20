@@ -100,7 +100,7 @@ class DiscountCalculatorTest {
         Order dessertOrder = new Order(Dessert.ICE_CREAM, 4); // 2만원, 도합 12만원
         orders = new Orders(List.of(mainOrder, dessertOrder));
         discountCalculator = new DiscountCalculator(orders);
-        assertThat(discountCalculator.isFreeGiftApplicable()).isTrue();
+        assertThat(discountCalculator.getFreeGiftBenefit()).isEqualTo(FreeGift.FOR_CHRISTMAS_EVENT.getPrice());
     }
 
     @Test
@@ -111,7 +111,7 @@ class DiscountCalculatorTest {
         Order caesarSaladOrder = new Order(Appetizer.CAESAR_SALAD, 1); // 8000 원 -> 도합 199_000 원
         orders = new Orders(List.of(mainOrder, tapasOrder, caesarSaladOrder));
         discountCalculator = new DiscountCalculator(orders);
-        assertThat(discountCalculator.isFreeGiftApplicable()).isFalse();
+        assertThat(discountCalculator.getFreeGiftBenefit()).isZero();
     }
 
     @ParameterizedTest

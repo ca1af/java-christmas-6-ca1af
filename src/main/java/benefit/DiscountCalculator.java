@@ -15,14 +15,14 @@ public class DiscountCalculator {
     }
 
     public int getTotalBenefit(OrderDay orderDay){
-        if (this.isFreeGiftApplicable()){
-            return getTotalDiscount(orderDay) + FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
-        }
-        return getTotalDiscount(orderDay);
+        return getTotalDiscount(orderDay) + getFreeGiftBenefit();
     }
 
-    public boolean isFreeGiftApplicable(){
-        return this.getOrderAmount() >= FREE_GIFT_STANDARD;
+    public int getFreeGiftBenefit(){
+        if (this.getOrderAmount() >= FREE_GIFT_STANDARD){
+            return FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
+        }
+        return NO_DISCOUNT;
     }
 
     public int getOrderAmount() {
