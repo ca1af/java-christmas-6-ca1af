@@ -1,5 +1,6 @@
 package console;
 
+import benefit.DiscountCalculator;
 import date.OrderDay;
 import order.Order;
 import order.Orders;
@@ -18,7 +19,7 @@ public class OutputView {
 
     public void printOrderMenus(Orders orders){
         System.out.println(ORDER_MENU);
-        List<Order> userOrders = orders.getOrders();
+        List<Order> userOrders = orders.orders();
         userOrders.forEach(this::printOrderMenu);
     }
 
@@ -29,29 +30,29 @@ public class OutputView {
         System.out.println(formattedOrderAmount + WON);
     }
 
-    public void printFreeGift(Orders orders){
+    public void printFreeGift(DiscountCalculator discountCalculator){
         System.out.println(FREE_GIFT);
-        String freeGift = getFreeGift(orders);
+        String freeGift = getFreeGift(discountCalculator);
         System.out.println(freeGift);
     }
 
-    public void printTotalBenefit(Orders orders, OrderDay orderDay){
+    public void printTotalBenefit(DiscountCalculator discountCalculator, OrderDay orderDay){
         System.out.println(TOTAL_BENEFIT);
-        int totalBenefit = orders.getTotalBenefit(orderDay);
+        int totalBenefit = discountCalculator.getTotalBenefit(orderDay);
         String formattedTotalBenefit = Formatter.formatPrice(totalBenefit);
         System.out.println(MINUS + formattedTotalBenefit + WON);
     }
 
-    public void printActualTotalPrice(Orders orders, OrderDay orderDay){
+    public void printActualTotalPrice(DiscountCalculator discountCalculator, OrderDay orderDay){
         System.out.println(ACTUAL_TOTAL_PRICE);
-        int actualTotalPrice = orders.getOrderAmount() - orders.getTotalDiscount(orderDay);
+        int actualTotalPrice = discountCalculator.getActualTotalPrice(orderDay);
         String formatPrice = Formatter.formatPrice(actualTotalPrice);
         System.out.println(formatPrice + WON);
     }
 
-    public void printEventBadge(Orders orders, OrderDay orderDay){
+    public void printEventBadge(DiscountCalculator discountCalculator, OrderDay orderDay){
         System.out.println(EVENT_BADGE);
-        System.out.println(orders.getBadge(orderDay));
+        System.out.println(discountCalculator.getBadge(orderDay));
     }
 
     private void printOrderMenu(Order order){
@@ -60,8 +61,8 @@ public class OutputView {
         System.out.println(menuName + SPACE + menuQuantity + UNIT_SUFFIX);
     }
 
-    private String getFreeGift(Orders orders) {
-        if (orders.isFreeGiftApplicable()){
+    private String getFreeGift(DiscountCalculator discountCalculator) {
+        if (discountCalculator.isFreeGiftApplicable()){
             return FREE_GIFT_CHAMPAIGN;
         }
         return NONE;

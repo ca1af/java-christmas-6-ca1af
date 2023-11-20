@@ -1,39 +1,39 @@
 package console;
 
+import benefit.DiscountCalculator;
 import date.OrderDay;
 import gift.FreeGift;
-import order.Orders;
 
 import static console.OutputConstants.*;
 
 public class DiscountDetailOutputView {
     private static final int NO_DISCOUNT = 0;
-    public void printDiscountDetails(Orders orders, OrderDay orderDay){
+    public void printDiscountDetails(DiscountCalculator discountCalculator, OrderDay orderDay){
         System.out.println(DISCOUNT_DETAILS);
-        if (isDiscountNotApplicable(orders, orderDay)) {
+        if (isDiscountNotApplicable(discountCalculator, orderDay)) {
             System.out.println(NONE);
             return;
         }
-        printDDayDiscount(orders, orderDay);
-        printDayOfWeekDiscount(orders, orderDay);
-        printStarDayDiscount(orders, orderDay);
-        printFreeGift(orders);
+        printDDayDiscount(discountCalculator, orderDay);
+        printDayOfWeekDiscount(discountCalculator, orderDay);
+        printStarDayDiscount(discountCalculator, orderDay);
+        printFreeGift(discountCalculator);
     }
 
-    private boolean isDiscountNotApplicable(Orders orders, OrderDay orderDay) {
-        return orders.getTotalDiscount(orderDay) == NO_DISCOUNT;
+    private boolean isDiscountNotApplicable(DiscountCalculator discountCalculator, OrderDay orderDay) {
+        return discountCalculator.getTotalDiscount(orderDay) == NO_DISCOUNT;
     }
 
-    private void printDDayDiscount(Orders orders, OrderDay orderDay) {
-        int discountByDDay = orders.getDDayDiscount(orderDay);
+    private void printDDayDiscount(DiscountCalculator discountCalculator, OrderDay orderDay) {
+        int discountByDDay = discountCalculator.getDDayDiscount(orderDay);
         if (discountByDDay != NO_DISCOUNT){
             String discountMessage = this.getDiscountMessage(D_DAY_DISCOUNT, discountByDDay);
             System.out.println(discountMessage);
         }
     }
 
-    private void printDayOfWeekDiscount(Orders orders, OrderDay orderDay) {
-        int dayOfWeekDiscount = orders.getDayOfWeekDiscount(orderDay);
+    private void printDayOfWeekDiscount(DiscountCalculator discountCalculator, OrderDay orderDay) {
+        int dayOfWeekDiscount = discountCalculator.getDayOfWeekDiscount(orderDay);
         if (dayOfWeekDiscount == NO_DISCOUNT){
             return;
         }
@@ -49,14 +49,14 @@ public class DiscountDetailOutputView {
         return WEEK_DAY_DISCOUNT;
     }
 
-    private void printStarDayDiscount(Orders orders, OrderDay orderDay) {
-        if (orders.getStarDayDiscount(orderDay) != NO_DISCOUNT){
-            String discountMessage = this.getDiscountMessage(STAR_DISCOUNT, orders.getStarDayDiscount(orderDay));
+    private void printStarDayDiscount(DiscountCalculator discountCalculator, OrderDay orderDay) {
+        if (discountCalculator.getStarDayDiscount(orderDay) != NO_DISCOUNT){
+            String discountMessage = this.getDiscountMessage(STAR_DISCOUNT, discountCalculator.getStarDayDiscount(orderDay));
             System.out.println(discountMessage);
         }
     }
 
-    private void printFreeGift(Orders orders) {
+    private void printFreeGift(DiscountCalculator orders) {
         if (orders.isFreeGiftApplicable()){
             int freeGiftPrice = FreeGift.FOR_CHRISTMAS_EVENT.getPrice();
             String discountMessage = this.getDiscountMessage(FREE_GIFT_EVENT, freeGiftPrice);

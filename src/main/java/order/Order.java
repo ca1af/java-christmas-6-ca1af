@@ -3,9 +3,10 @@ package order;
 import date.OrderDay;
 import menu.Menu;
 
+import static benefit.DiscountConstant.DAY_OF_WEEK_DISCOUNT;
+import static benefit.DiscountConstant.NO_DISCOUNT;
+
 public class Order {
-    private static final int DAY_OF_WEEK_DISCOUNT = 2_023;
-    private static final int NO_DISCOUNT = 0;
     private final Menu menu;
     private final int menuQuantity;
 

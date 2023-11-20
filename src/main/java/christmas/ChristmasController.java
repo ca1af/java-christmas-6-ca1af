@@ -1,5 +1,6 @@
 package christmas;
 
+import benefit.DiscountCalculator;
 import console.DiscountDetailOutputView;
 import console.InputView;
 import console.OutputView;
@@ -26,21 +27,22 @@ public class ChristmasController {
     private void printOrderDetail(UserOrderDetail userOrderDetail) {
         outputView.printOrderMenus(userOrderDetail.userOrders());
         outputView.printOrderAmountBeforeBenefit(userOrderDetail.userOrders());
-        outputView.printFreeGift(userOrderDetail.userOrders());
-        discountDetailOutputView.printDiscountDetails(userOrderDetail.userOrders(), userOrderDetail.orderDay());
-        outputView.printTotalBenefit(userOrderDetail.userOrders(), userOrderDetail.orderDay());
-        outputView.printActualTotalPrice(userOrderDetail.userOrders(), userOrderDetail.orderDay());
-        outputView.printEventBadge(userOrderDetail.userOrders(), userOrderDetail.orderDay());
+        outputView.printFreeGift(userOrderDetail.discountCalculator());
+        discountDetailOutputView.printDiscountDetails(userOrderDetail.discountCalculator(), userOrderDetail.orderDay());
+        outputView.printTotalBenefit(userOrderDetail.discountCalculator(), userOrderDetail.orderDay());
+        outputView.printActualTotalPrice(userOrderDetail.discountCalculator(), userOrderDetail.orderDay());
+        outputView.printEventBadge(userOrderDetail.discountCalculator(), userOrderDetail.orderDay());
     }
 
     private UserOrderDetail getUserOrderDetail() {
         outputView.printGreetings();
         OrderDay orderDay = inputView.readDate();
         Orders userOrders = inputView.readOrders();
+        DiscountCalculator discountCalculator = new DiscountCalculator(userOrders);
         outputView.printBenefitPreview();
-        return new UserOrderDetail(orderDay, userOrders);
+        return new UserOrderDetail(orderDay, discountCalculator, userOrders);
     }
 
-    private record UserOrderDetail(OrderDay orderDay, Orders userOrders) {
+    private record UserOrderDetail(OrderDay orderDay, DiscountCalculator discountCalculator, Orders userOrders) {
     }
 }

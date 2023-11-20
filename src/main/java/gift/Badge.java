@@ -23,10 +23,10 @@ public enum Badge {
                 .toList();
     }
 
-    public static Badge getBadgeByPrice(int benefitAmount) {
+    public static String getBadgeNameByPrice(int benefitAmount) {
         for (Badge badge : SORTED_BY_PRICE_DESCENDING) {
             if (benefitAmount >= badge.getStandardPrice()) {
-                return badge;
+                return badge.name;
             }
         }
         throw new IllegalArgumentException(); // 입력된 benefitAmount 는 음수일 수 없다.
