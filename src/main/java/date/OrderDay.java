@@ -36,7 +36,7 @@ public class OrderDay {
 
     public boolean isStarDay(){
         int dayOfWeek = this.getDayOfWeek();
-        return dayOfWeek == START_DAY || this.day == D_DAY_EVENT_END_DAY;
+        return dayOfWeek == Calendar.SUNDAY || this.day == D_DAY_EVENT_END_DAY;
     }
 
     public boolean isDDayApplicable() {
